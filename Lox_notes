@@ -2,7 +2,6 @@
 	The rules that determine how a particular language groups
 	characters into lexemes.
 
-
 - MAXIMAL MUNCH:
 	When two lexical grammar rules can both match a chunk of code
 	that the scanner is looking at, WHICHEVER ONE MATCHES THE MOST
@@ -27,51 +26,85 @@
 	Since the objects know their own classes, the main idea is to
 	delegate choosing the proper method to the object itself
 	instead of letting the cliend select a method.
+ 
+- TOP-DOWN PARSER: 
+	The name comes from the fact that it starts from the top or
+	outermost grammar rule and works its way down into the nested
+	subexpressions before finally reaching the leaves of the syntax
+	tree.
+
+- RECURSIVE DESCENT PARSER:
+	Is a literal translation of the grammar's rules straight into
+	imperative code. Each rule becomes a function. The descent is
+	described as "recursive" because whan a grammar rule refers to
+	itself, directly or indirectly, that translates to a recursive
+	function call.
+		 
+- SYNTAX ERRORS:
+	When the user doesn't realize the syntax is wrong, it is up to
+	the parser to help guide them back onto the right path. The way
+	it reports errors is a large part of your language's user
+	interface. Good syntax error handling is hard. By definition,
+	the code isn't in a well-defined state, so there's no infallible
+	way to know what the user meant to write.
+
+	+ DETECTING AND REPORTING:
+		First and foremost, the parser needs to be able to detect the
+		error and avoid building a malformed syntax tree.
+
+	+ AVOIDING CRASHING AND HANGING:
+		Syntax errors are a fact, and language tools have to be robust
+		in the face of them. While the source may not be valid code,
+		it's still a valid input to the parser because users use the
+		parser to learn what syntax is allowed.
+
+	+ REPORTING MULTIPLE ERRORS:
+		The user must be able to see all the errors related to their
+		own mistakes, identifying as many of them as possible optimizes
+		the user experience within that programming language.
 	
-- Lox EBNF:
+	+ MINIMIZING CASCADED ERRORS:
+		Once a single error is found, the parser no longer really
+		knows what's going on. It tries to get itself back on track
+		and keep going, but if it gets confused, it may report
+		plenty of unrelated errors that don't indicateother real
+		problems, which is often bad because they can scare the user
+		into thinking their code is in a worse state than it is.
 
-expression	-> equality
+	+ ERROR RECOVERY:
+		The way a parser responds to an error and keeps going to look
+		for later ones.
 
-equality	-> comparison (("!=" | "==") comparison)*;
+- PANIC MODE:
+	As soon as the parser detects an error, it enters panic mode. It
+	knows at least one token doesn't make sense given its current
+	state in the middle of some stack of grammar productions.
 
-comparison	-> term ((">" | ">=" | "<" "<=") term)*;
+- SYNCHRONIZATION:
+	After detecting an error, before the parser go back to its duty,
+	it needs to get its state and the sequence of forthcoming tokens
+	aligned such that the next token does match the rule being parsed.
+	To do that, we select some rule in the grammar that will mark the
+	synchronization point. The parser fixes its parsing state by
+	jumping out of any nested productions until it gets back to that
+	rule. Then it synchronizes the token stram by discarding tokens
+	until it raches one that can appear at that point in the rule.
 
-term		-> factor(("-" | "+") factor)*;
+- ERROR PRODUCTIONS:
+	Another way to handle common syntax errors. You augment the grammar
+	with a rule that successfully matches the erroneous syntax. The
+	parser safely parses it but then reports it as an error instead of
+	producing a syntax tree. These type of productions work well
+	because the parser authors know how the code is wrong and what the
+	user was likely trying to do, meaning that more helpful messages
+	can be generated considering this level of specification.
 
-factor		-> unary (("/" | "*") unary)*;
 
-unary 		-> ("!" | "-") unary
-	       	 | primary;
-	
-primary 	-> NUMBER
-		 | STRING
-		 | "true"
-		 | "false"
-		 | "nil"
-		 | "(" expression ")";
-      
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
+
+
+
+
+
+
+
+
