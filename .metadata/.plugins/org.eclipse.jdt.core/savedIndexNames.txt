@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+/home/gustavo/Documents/Projects/Lox/.metadata/.plugins/org.eclipse.jdt.core
+1865797976.index
+646308851.index
+744416397.index

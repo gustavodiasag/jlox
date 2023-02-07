@@ -1,0 +1,77 @@
+- LEXICAL GRAMMAR:
+	The rules that determine how a particular language groups
+	characters into lexemes.
+
+
+- MAXIMAL MUNCH:
+	When two lexical grammar rules can both match a chunk of code
+	that the scanner is looking at, WHICHEVER ONE MATCHES THE MOST
+	CHARACTERS WINS.
+	
+- RESERVED WORD:
+	Can be defined as an identifier, but one that has been claimed
+	by the language for its own use.
+	
+- FORMAL GAMMARS:
+	A formal grammar takes a set of atomic pieces it calls its
+	"alphabet". Then it defines a (usually infinite) set of 
+	"strings" that are "in" the grammar. Each string is a sequence
+	of "letters" in the alphabet. A formal grammar's job is to
+	specify which strings are valid and which aren't.
+	
+- VISITOR PATTERN:
+	Is a behavioral design pattern that lets you separate the
+	algorithms or behaviors from the objects on which they operate.
+	
+- DOUBLE DISPATCH:
+	Since the objects know their own classes, the main idea is to
+	delegate choosing the proper method to the object itself
+	instead of letting the cliend select a method.
+	
+- Lox EBNF:
+
+expression	-> equality
+
+equality	-> comparison (("!=" | "==") comparison)*;
+
+comparison	-> term ((">" | ">=" | "<" "<=") term)*;
+
+term		-> factor(("-" | "+") factor)*;
+
+factor		-> unary (("/" | "*") unary)*;
+
+unary 		-> ("!" | "-") unary
+	       	 | primary;
+	
+primary 	-> NUMBER
+		 | STRING
+		 | "true"
+		 | "false"
+		 | "nil"
+		 | "(" expression ")";
+      
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
