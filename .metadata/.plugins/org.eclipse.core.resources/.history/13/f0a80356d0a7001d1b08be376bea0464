@@ -1,0 +1,41 @@
+package jlox;
+
+class Interpreter implements Expr.Visitor<Object> {
+	
+	@Override
+	public Object visitGroupingExpr(Expr.Grouping expr) {
+		
+		/**
+		 * A grouping node has a reference to an inner node for
+		 * the expression contained inside the parentheses. To
+		 * evaluate the grouping expression itself, the
+		 * subexpression is evaluated
+		 */
+		return evaluate(expr.expression);
+	}
+	
+	@Override
+	public Object visitUnaryExpr(Expr.Unary expr) {
+		Object right = evaluate(expr.right);
+		
+		switch (expr.operator.type) {
+		case MINUS:
+			return -(double)right;
+		}
+	}
+	
+	public Object visitLiteralExpr(Expr.Literal expr) {
+		
+		/**
+		 * The runtime value was produced during the scanning and
+		 * parsing processes and put on the "Literal" object 
+		 */
+		return expr.value;
+	}
+	
+	@Override
+	
+	private Object evaluate(Expr expr) {
+		return expr.accept(this);
+	}
+}

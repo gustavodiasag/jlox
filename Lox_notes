@@ -36,7 +36,7 @@
 - RECURSIVE DESCENT PARSER:
 	Is a literal translation of the grammar's rules straight into
 	imperative code. Each rule becomes a function. The descent is
-	described as "recursive" because whan a grammar rule refers to
+	described as "recursive" because when a grammar rule refers to
 	itself, directly or indirectly, that translates to a recursive
 	function call.
 		 
@@ -87,8 +87,8 @@
 	To do that, we select some rule in the grammar that will mark the
 	synchronization point. The parser fixes its parsing state by
 	jumping out of any nested productions until it gets back to that
-	rule. Then it synchronizes the token stram by discarding tokens
-	until it raches one that can appear at that point in the rule.
+	rule. Then it synchronizes the token stream by discarding tokens
+	until it reaches one that can appear at that point in the rule.
 
 - ERROR PRODUCTIONS:
 	Another way to handle common syntax errors. You augment the grammar
@@ -99,12 +99,8 @@
 	user was likely trying to do, meaning that more helpful messages
 	can be generated considering this level of specification.
 
-
-
-
-
-
-
-
+- STATICALLY TYPED LANGUAGES:
+	Errors related to typing are detected and reported at compiple time
+	before any code is run.
 
 

@@ -1,5 +1,6 @@
 package jlox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static jlox.TokenType.*;
@@ -14,9 +15,7 @@ class Parser {
 	 *
 	 * In those places, we simply report the error
 	 */
-	private static class ParseError extends RuntimeException {
-		
-	}
+	private static class ParseError extends RuntimeException {}
 	
 	private final List<Token> tokens;
 	private int current = 0;
@@ -30,14 +29,15 @@ class Parser {
 		this.tokens = tokens;
 	}
 	
-	Expr parse() {
-		try {
-			return expression();
-		} catch (ParseError error) {
-			return null;
-		}
+	List<Stmt> parse() {
+		List<Stmt> statements = new ArrayList<>();
+		
+		while (!isAtEnd())
+			statements.add(statement());
+		
+		return statements;
 	}
-
+	
 	/**
 	 * Each method for parsing a grammar rule produces a
 	 * syntax tree for that rule and returns it to the
@@ -47,19 +47,49 @@ class Parser {
 	 * reference to another rule) we call that other
 	 * rule's method
 	 */
-
-	/**
-	 * - expression:		equality;
+	
+	/*
+	 *  statement:			exprStmt
+	 *  					| printStmt
 	 */
+	private Stmt statement() {
+		if (match(PRINT))
+			return printStatement();
+		
+		return expressionStatement();
+	}
+	
+	// printStmt:			"print" expression ";"
+	private Stmt printStatement() {
+		Expr value = expression();
+		
+		/**
+		 * Since the "print" token has already been matched,
+		 * we just parse the subsequent expression, consume
+		 * the terminating semicolon and emit the syntax tree
+		 */
+		consume(SEMICOLON, "Expect ';' after value.");
+		
+		return new Stmt.Print(value);
+	}
+	
+	// exprStmt:			expression ";"
+	private Stmt expressionStatement() {
+		Expr expr = expression();
+		
+		consume(SEMICOLON, "Expect ';' after expression.");
+		
+		return new Stmt.Expression(expr);
+	}
+
+	// expression:			equality;
 	private Expr expression() {
 
 		// The first rule simply expand to the equality rule
 		return equality();
 	}
-
-	/**
-	 * - equality:			comparison (("!=" | "==") comparison)*
-	 */
+	
+	// equality:			comparison (("!=" | "==") comparison)*
 	private Expr equality() {
 		Expr expr = comparison();
 
@@ -71,7 +101,6 @@ class Parser {
 		 * of those, we must be done with the sequence of
 		 * equality operators
 		 */
-
 		while (match(BANG_EQUAL, EQUAL_EQUAL)) {
 			Token operator = previous();
 			Expr right = comparison();
@@ -82,12 +111,14 @@ class Parser {
 		return expr;
 	}
 
-	/**
-	 * - comparison:		term ((">" | ">=' | "<" | "<=") term)*
-	 */
+	// comparison:			term ((">" | ">=' | "<" | "<=") term)*
 	private Expr comparison() {
 		Expr expr = term();
 
+		/**
+		 * The process for matching binary operations remains the
+		 * same for all the nested binary rules
+		 */
 		while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
 			Token operator = previous();
 			Expr right = term();
@@ -97,10 +128,8 @@ class Parser {
 
 		return expr;
 	}
-
-	/**
-	 * - term:				factor (("+" | "-") factor)*
-	 */
+	
+	// term:				factor (("+" | "-") factor)*
 	private Expr term() {
 		Expr expr = factor();
 
@@ -114,9 +143,7 @@ class Parser {
 		return expr;
 	}
 
-	/**
-	 * - factor:			unary (("/" | "*") unary)*
-	 */
+	// factor:				unary (("/" | "*") unary)*
 	private Expr factor() {
 		Expr expr = unary();
 
@@ -130,10 +157,7 @@ class Parser {
 		return expr;
 	}
 
-	/**
-	 * - unary:				("!" | "-") unary
-	 *   					| primary
-	 */
+	// unary:				("!" | "-") unary
 	private Expr unary() {
 		if (match(BANG, MINUS)) {
 			Token operator = previous();

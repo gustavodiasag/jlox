@@ -1,0 +1,19 @@
+package jlox;
+
+class Interpreter implements Expr.Visitor<Object> {
+	
+	@Override
+	public Object visitLiteralExpr(Expr.Literal expr) {
+		
+		/**
+		 * The runtime value was produced during the scanning and
+		 * parsing processes and put on the "Literal" object 
+		 */
+		return expr.value;
+	}
+	
+	@Override
+	public Object visitGroupingExpr(Expr.Grouping expr) {
+		return evaluate(expr.expression);
+	}
+}

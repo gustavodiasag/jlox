@@ -1,0 +1,5 @@
+package jlox;
+
+class Interpreter implements Expr.Visitor<Object> {
+	
+}
