@@ -103,4 +103,45 @@
 	Errors related to typing are detected and reported at compiple time
 	before any code is run.
 
+- VARIABLE EXPRESSION:
+	A variable declaration statement creates a new binding that
+	associates a name with a value. Once that's done, a variable
+	expression accesses that binding and when the identifier is used as
+	an expression, it looks up the value bound to that name and returns
+	it.
+
+- ENVIRONMENT:
+	The data structure that stores the bindings that associate variables
+	to values.
+
+- L AND R VALUES:
+	All of the expressions that produce values are r-values and an
+	l-value evaluates to a storage location that one can assign into.
+
+- SCOPE:
+	Defines a region where a name maps to a certain entity. Multiple
+	scopes enable the same name to refer to different things in
+	different contexts.
+
+- LEXICAL SCOPE:
+	A specific style of scoping where the text of the program itself
+	shows where a scope begins and ends. When an expression uses some
+	variable, there's a way to figure out which variable declaration it
+	refers to by just statically reading the code.
+
+- SHADOWING:
+	When a local variable has the same name as a variable in an
+	enclosing scope. Code inside the block can't see it any more, it is
+	hidden in the shadow cast by the inner one, but it's still there.
+
+- PARENT POINTER TREE:
+	While the interpreter is running, the environments form a linear
+	list of objects, but consider the full set of environments created
+	during the entire execution. An outer scope may have multiple blocks
+	nested within it, and each will point to the outer one, forming a
+	tree-like structure, even though only one path through the tree
+	exists at a time.
+
+
+
 

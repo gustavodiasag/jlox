@@ -13,6 +13,6 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="tool.GenerateAst"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="jlox"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="src/"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="src/jlox"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jlox"/>
 </launchConfiguration>

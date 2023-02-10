@@ -6,34 +6,32 @@ import java.util.List;
 import static jlox.TokenType.*;
 
 class Parser {
-	/**
-	 * Sentinel class used to unwind the parser
-	 * 
-	 * Some parse errors occur in places where the parser
-	 * isn't likely to get into a weird state and we don't
-	 * need to synchronize
-	 *
-	 * In those places, we simply report the error
-	 */
-	private static class ParseError extends RuntimeException {}
-	
 	private final List<Token> tokens;
 	private int current = 0;
 	
 	/**
 	 * Like the scanner, the parser consumes a flat input
-	 * sequence, only now we're reading tokens instead of
+	 * sequence, only now tokens are read instead of
 	 * characters
 	 */
 	Parser(List<Token> tokens) {
 		this.tokens = tokens;
 	}
 	
+	/**
+	 * Sentinel class used to unwind the parser. Some
+	 * parse errors occur in places where the parser
+	 * isn't likely to get into a weird state and
+	 * there's no need to synchronize. When it happens,
+	 * an error is simply reported
+	 */
+	private static class ParseError extends RuntimeException {}
+	
 	List<Stmt> parse() {
 		List<Stmt> statements = new ArrayList<>();
 		
 		while (!isAtEnd())
-			statements.add(statement());
+			statements.add(declaration());
 		
 		return statements;
 	}
@@ -41,20 +39,53 @@ class Parser {
 	/**
 	 * Each method for parsing a grammar rule produces a
 	 * syntax tree for that rule and returns it to the
-	 * caller
-	 *
-	 * When the body of rule contains a nonterminal (a
-	 * reference to another rule) we call that other
-	 * rule's method
+	 * caller. When the body of rule contains a nonterminal
+	 * that other rule's method is called
 	 */
+	
+	/**
+	 * declaration:			varDecl
+	 * 						| statement
+	 */
+	private Stmt declaration() {
+		try {
+			if (match(VAR))
+				return varDeclaration();
+			
+			return statement();
+			
+		} catch (ParseError error) {
+			synchronize();
+			
+			return null;
+		}
+	}
+	
+	// varDecl:				"var" IDENTIFIER  ("=" expression)? ";"
+	private Stmt varDeclaration() {
+		Token name = consume(IDENTIFIER, "Expect variable name.");
+		
+		Expr initializer = null;
+		
+		if (match(EQUAL))
+			initializer = expression();
+		
+		consume(SEMICOLON, "Expect ';' after variable declaration");
+		
+		return new Stmt.Var(name,  initializer);
+	}
 	
 	/*
 	 *  statement:			exprStmt
 	 *  					| printStmt
+	 *  					| block
 	 */
 	private Stmt statement() {
 		if (match(PRINT))
 			return printStatement();
+		
+		if (match(LEFT_BRACE))
+			return new Stmt.Block(block());
 		
 		return expressionStatement();
 	}
@@ -81,12 +112,47 @@ class Parser {
 		
 		return new Stmt.Expression(expr);
 	}
+	
+	// block:				"{" declaration "}"
+	private List<Stmt> block() {
+		List<Stmt> statements = new ArrayList<>();
+		
+		while (!check(RIGHT_BRACE) && !isAtEnd())
+			statements.add(declaration());
+		
+		consume(RIGHT_BRACE, "Expect '}' after block.");
+		
+		return statements;
+	}
 
-	// expression:			equality;
+	// expression:			assignment
 	private Expr expression() {
 
 		// The first rule simply expand to the equality rule
-		return equality();
+		return assignment();
+	}
+	
+	/**
+	 * assignment:			IDENTIFIER "=" assigment
+	 * 						| equality
+	 */
+	private Expr assignment() {
+		Expr expr = equality();
+		
+		if (match(EQUAL)) {
+			Token equals = previous();
+			Expr value = assignment();
+			
+			if (expr instanceof Expr.Variable) {
+				Token name = ((Expr.Variable)expr).name;
+				
+				return new Expr.Assign(name, value);
+			}
+			
+			error(equals, "Invalid assignment target.");
+		}
+		
+		return expr;
 	}
 	
 	// equality:			comparison (("!=" | "==") comparison)*
@@ -189,6 +255,9 @@ class Parser {
 
 		if (match(NUMBER, STRING)) 
 			return new Expr.Literal(previous().literal);
+		
+		if (match(IDENTIFIER))
+			return new Expr.Variable(previous());
 
 		if (match(LEFT_PAREN)) {
 			Expr expr = expression();

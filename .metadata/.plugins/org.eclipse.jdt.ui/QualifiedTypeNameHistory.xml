@@ -10,4 +10,8 @@
     <fullyQualifiedTypeName name="jlox.Stmt.Visitor"/>
     <fullyQualifiedTypeName name="jlox.Stmt.Expression"/>
     <fullyQualifiedTypeName name="jlox.Stmt.Print"/>
+    <fullyQualifiedTypeName name="jlox.Stmt.Var"/>
+    <fullyQualifiedTypeName name="jlox.Expr.Variable"/>
+    <fullyQualifiedTypeName name="jlox.Expr.Assign"/>
+    <fullyQualifiedTypeName name="jlox.Stmt.Block"/>
 </qualifiedTypeNameHistroy>
