@@ -1,0 +1,4 @@
+var a = "Fizz";
+
+if (a < "Buzz")
+	print "hello, world!";

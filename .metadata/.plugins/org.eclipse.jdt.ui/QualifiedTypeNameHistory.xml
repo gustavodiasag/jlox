@@ -3,15 +3,20 @@
     <fullyQualifiedTypeName name="java.io.InvalidObjectException"/>
     <fullyQualifiedTypeName name="jlox.TokenType"/>
     <fullyQualifiedTypeName name="jlox.Expr.Visitor"/>
-    <fullyQualifiedTypeName name="jlox.Expr.Literal"/>
     <fullyQualifiedTypeName name="jlox.Expr.Grouping"/>
     <fullyQualifiedTypeName name="jlox.Expr.Unary"/>
     <fullyQualifiedTypeName name="jlox.Expr.Binary"/>
     <fullyQualifiedTypeName name="jlox.Stmt.Visitor"/>
-    <fullyQualifiedTypeName name="jlox.Stmt.Expression"/>
     <fullyQualifiedTypeName name="jlox.Stmt.Print"/>
     <fullyQualifiedTypeName name="jlox.Stmt.Var"/>
     <fullyQualifiedTypeName name="jlox.Expr.Variable"/>
     <fullyQualifiedTypeName name="jlox.Expr.Assign"/>
+    <fullyQualifiedTypeName name="jlox.Stmt.If"/>
+    <fullyQualifiedTypeName name="jlox.Expr.Logical"/>
+    <fullyQualifiedTypeName name="jlox.Stmt.Expression"/>
+    <fullyQualifiedTypeName name="jlox.Expr.Literal"/>
+    <fullyQualifiedTypeName name="jlox.Stmt.While"/>
     <fullyQualifiedTypeName name="jlox.Stmt.Block"/>
+    <fullyQualifiedTypeName name="jlox.Expr.Call"/>
+    <fullyQualifiedTypeName name="jlox.Stmt.Function"/>
 </qualifiedTypeNameHistroy>

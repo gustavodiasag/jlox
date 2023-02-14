@@ -13,6 +13,6 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="jlox.Lox"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="jlox"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="./examples/attribution.lox"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="./examples/function.lox"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jlox"/>
 </launchConfiguration>
